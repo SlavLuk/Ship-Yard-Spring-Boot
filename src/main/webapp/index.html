@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>SS RAD Final Project</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-	<table>
+<div class = "container">
+	<table class="table table-striped">
 	  <tr>
 	    <th>Ships</th>
 	    <th>Shipping Companies</th> 
@@ -21,8 +31,35 @@
 	    <td><a href="/addShippingCompany">Add Shipping Company</a></td>
 	    <td><a href="/createOrder">Create Order</a></td>
 	  </tr>
-	</table>   
-	<br>
-	<a href="/logout">Logout</a> 
+	  
+	</table>  
+	<div>
+	<a id = "logout" href="/logout" >Logout</a>  
+	</div>
+	</div>
+	
+	
+	
+
+	
+  <script type="text/javascript">
+	
+	document.getElementById("logout").addEventListener("click", function(event){
+	
+		
+		if(!confirm("You are about to logout")){
+		
+		 event.preventDefault();
+		 
+		}
+		
+	});
+	
+	
+	
+	
+	
+	</script>
+	
 </body>
 </html>

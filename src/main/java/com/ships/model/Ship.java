@@ -2,6 +2,7 @@ package com.ships.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,16 +14,22 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class Ship {
+	
 	@Id
 	@GeneratedValue
 	private int sid;
+	
 	@NotNull
     @Size(min=1,max=250)
 	private String name;
+	
 	@Min(value = 0)
 	private int passengers;
+	
+	@Min(value = 1)
 	@NotNull
 	private BigDecimal cost;
+	
 	@Min(value = 1)
 	private double metres;
 	

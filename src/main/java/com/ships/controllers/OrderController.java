@@ -1,5 +1,6 @@
 package com.ships.controllers;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,15 +29,20 @@ public class OrderController {
 
 	@Autowired
 	OrderService orderService;
+
 	@Autowired
 	ShipService shipService;
+
 	@Autowired
 	ShippingCompanyService shipCompanyService;
 
+	// request handler for showOrders
 	@RequestMapping(value = "/showOrders", method = RequestMethod.GET)
 	public String showOrder(Model model) {
+
 		List<OrderInfo> orders = orderService.findAllOrderInfo();
 		model.addAttribute("orders", orders);
+
 		return "showOrders";
 
 	}
@@ -44,28 +50,50 @@ public class OrderController {
 	@RequestMapping(value = "/createOrder", method = RequestMethod.POST)
 	public String createOrder(@ModelAttribute("info") OrderInfo info) {
 
-		if (info != null) {
+		if (info.getShip() == null || info.getShippingCompany() == null) {
 
-			Ship s = shipService.findByIdShip(info.getShip().getSid());
-			ShippingCompany sc = shipCompanyService.findByIdShipCompany(info.getShippingCompany().getScid());
+			return "forward:errorSelected";
 
-			OrderInfo order = new OrderInfo();
+		} else {
 
-			Date now = new Date();
-			SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-			
-			order.setDate(ft.format(now));
-			order.setShip(s);
-			order.setShippingCompany(sc);
-			
-			orderService.addOrder(order);
+			if (info.getShip().getCost().compareTo(info.getShippingCompany().getBalance()) == 1) {
 
-			return "redirect:showOrders";
+				return "forward:orderError";
+
+			} else {
+
+				Ship ship = info.getShip();
+
+				ShippingCompany sc = info.getShippingCompany();
+
+				BigDecimal newBalance = info.getShippingCompany().getBalance().subtract(info.getShip().getCost());
+
+				sc.setBalance(newBalance);
+
+				shipCompanyService.addShipCompany(sc);
+
+				ship.setShippingCompany(sc);
+
+				shipService.addShip(ship);
+
+				OrderInfo order = new OrderInfo();
+
+				SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+
+				order.setDate(ft.format(new Date()));
+				order.setShip(ship);
+				order.setShippingCompany(sc);
+
+				orderService.addOrder(order);
+
+				return "redirect:showOrders";
+			}
+
 		}
 
-		return "createOrder";
-
 	}
+
+	
 
 	@RequestMapping(value = "/createOrder", method = RequestMethod.GET)
 	public String createOrder(Model model) {
@@ -80,13 +108,13 @@ public class OrderController {
 
 			String shipName = s.getName() + "; Cost = " + s.getCost();
 
-			shipList.put((Long) ((long) s.getSid()), shipName);
+			shipList.put(((long) s.getSid()), shipName);
 
 		}
 		for (ShippingCompany sc : shipCompList) {
 
 			String shipComName = sc.getName() + "; Balance = " + sc.getBalance();
-			shipCompanies.put((Long) ((long) sc.getScid()), shipComName);
+			shipCompanies.put(((long) sc.getScid()), shipComName);
 		}
 
 		model.addAttribute("shipList", shipList);
@@ -96,6 +124,20 @@ public class OrderController {
 		model.addAttribute("info", info);
 
 		return "createOrder";
+
+	}
+	
+	@RequestMapping(value = "/orderError", method = RequestMethod.POST)
+	public String orderError() {
+
+		return "orderError";
+
+	}
+
+	@RequestMapping(value = "/errorSelected", method = RequestMethod.POST)
+	public String orderErrorShip() {
+
+		return "errorSelected";
 
 	}
 

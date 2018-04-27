@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.criteria.Order;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,14 +22,19 @@ public class ShippingCompany {
 	@Id
 	@GeneratedValue
 	private int scid;
+	
 	@NotNull
     @Size(min=1,max=250)
 	private String name;
+	
 	@NotNull
     @Size(min=1,max=250)
 	private String homePort;
+	
+	@Min(value = 1)
 	@NotNull
 	private BigDecimal balance;
+	
 	@OneToMany(mappedBy="shippingCompany")
 	private List<Ship>  ships = new ArrayList<Ship>();
 	

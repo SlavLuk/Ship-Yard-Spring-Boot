@@ -7,23 +7,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-table,tr,th,td{
- border:1px solid black;
- border-collapse: collapse;
-}
-th,td{
-padding: 10px;
-}
-</style>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Ships</title>
 </head>
 <body>
-
+<div class="container">
 <h1>Ships</h1>
-<table>
+<table class="table table-striped">
   <tr>
    <th>Name</th>
    <th>Passengers</th>
@@ -43,7 +41,11 @@ padding: 10px;
       </tr>
     </c:forEach>
   </tr>
+
 </table>
+<div>
 <a href="/index.html">Home</a>
+</div>
+</div>
 </body>
 </html>
